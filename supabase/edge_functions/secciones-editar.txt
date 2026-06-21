@@ -1,6 +1,23 @@
 // secciones-editar/index.ts
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { verifyJWT } from "https://esm.sh/jose@4.14.4";
+
+function getServiceRoleKey() {
+  const secretKeys = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!secretKeys) {
+    throw new Error("SUPABASE_SECRET_KEYS is required");
+  }
+  try {
+    const parsed = JSON.parse(secretKeys);
+    return parsed.service_role ?? parsed.serviceRole ?? parsed.service_role_key ?? parsed.serviceRoleKey ?? Object.values(parsed)[0] ?? secretKeys;
+  } catch {
+    return secretKeys;
+  }
+}
+
+const supabaseAdmin = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  getServiceRoleKey()!
+);
 
 Deno.serve(async (req) => {
   try {
@@ -12,24 +29,24 @@ Deno.serve(async (req) => {
     }
 
     // 1. Validar token
-    const token = req.headers.get("Authorization")?.replace("Bearer ", "");
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const token = authHeader.replace("Bearer ", "");
     if (!token) {
       return new Response(JSON.stringify({ error: "Token requerido" }), {
         status: 401,
       });
     }
 
-    const { payload } = await verifyJWT(token, Deno.env.get("JWT_SECRET"), {
-      algorithms: ["HS256"],
-    });
+    const { data: authData, error: authError } = await supabaseAdmin.auth.getUser(token);
+    if (authError || !authData.user) {
+      return new Response(JSON.stringify({ error: "Token inválido" }), {
+        status: 401,
+      });
+    }
 
-    const user_id = payload.sub;
+    const user_id = authData.user.id;
 
     // 2. Validar roles permitidos
-    const supabaseAdmin = createClient(
-      Deno.env.get("SUPABASE_URL"),
-      Deno.env.get("SUPABASE_SECRET_KEYS")
-    );
 
     const { data: roles } = await supabaseAdmin
       .from("user_roles")

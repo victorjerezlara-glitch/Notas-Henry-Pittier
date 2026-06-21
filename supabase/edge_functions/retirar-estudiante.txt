@@ -3,6 +3,19 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+function getServiceRoleKey() {
+  const secretKeys = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!secretKeys) {
+    throw new Error("SUPABASE_SECRET_KEYS is required");
+  }
+  try {
+    const parsed = JSON.parse(secretKeys);
+    return parsed.service_role ?? parsed.serviceRole ?? parsed.service_role_key ?? parsed.serviceRoleKey ?? Object.values(parsed)[0] ?? secretKeys;
+  } catch {
+    return secretKeys;
+  }
+}
+
 serve(async (req: Request) => {
   try {
     // 1. Validar método
@@ -26,7 +39,7 @@ serve(async (req: Request) => {
     // 3. Crear cliente Supabase con autenticación del usuario
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SECRET_KEYS")!, // Necesita service role para SECURITY DEFINER
+      getServiceRoleKey()!, // Necesita service role para SECURITY DEFINER
       {
         global: {
           headers: { Authorization: req.headers.get("Authorization")! },

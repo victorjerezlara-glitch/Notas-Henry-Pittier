@@ -1,9 +1,22 @@
 // users-update_user/index.ts
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 
+function getServiceRoleKey() {
+  const secretKeys = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!secretKeys) {
+    throw new Error("SUPABASE_SECRET_KEYS is required");
+  }
+  try {
+    const parsed = JSON.parse(secretKeys);
+    return parsed.service_role ?? parsed.serviceRole ?? parsed.service_role_key ?? parsed.serviceRoleKey ?? Object.values(parsed)[0] ?? secretKeys;
+  } catch {
+    return secretKeys;
+  }
+}
+
 const supabaseAdmin = createClient(
   Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SECRET_KEYS")!
+  getServiceRoleKey()!
 );
 
 // ------------------------------------------------------------
@@ -151,54 +164,30 @@ Deno.serve(async (req) => {
       if (rol === "docente") {
         const { data: existeDoc } = await supabaseAdmin
           .from("docentes")
-          .select("id_docente")
-          .eq("id_docente", user_id)
+          .select("id")
+          .eq("id", user_id)
           .maybeSingle();
 
         if (!existeDoc) {
           await supabaseAdmin.from("docentes").insert({
-            id_docente: user_id,
-            especialidad: especialidad || null,
+            id: user_id,
+            username: "",
+            nombres: nombres || "",
+            apellidos: apellidos || "",
+            activo: true,
           });
-        } else if (especialidad !== undefined) {
-          await supabaseAdmin
-            .from("docentes")
-            .update({ especialidad })
-            .eq("id_docente", user_id);
         }
       } else {
         await supabaseAdmin
           .from("docentes")
           .delete()
-          .eq("id_docente", user_id);
+          .eq("id", user_id);
       }
     }
 
     // ------------------------------------------------------------
     // 9. Actualizar especialidad si NO se cambió rol
-    // ------------------------------------------------------------
-    else if (especialidad !== undefined) {
-      const { data: esDoc } = await supabaseAdmin
-        .from("docentes")
-        .select("id_docente")
-        .eq("id_docente", user_id)
-        .maybeSingle();
-
-      if (!esDoc) {
-        return new Response(
-          JSON.stringify({
-            error:
-              "La especialidad solo puede asignarse a usuarios con rol docente",
-          }),
-          { status: 400 }
-        );
-      }
-
-      await supabaseAdmin
-        .from("docentes")
-        .update({ especialidad })
-        .eq("id_docente", user_id);
-    }
+    // Nota: campo especialidad no existe en tabla docentes
 
     return new Response(
       JSON.stringify({

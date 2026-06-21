@@ -3,6 +3,19 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+function getServiceRoleKey() {
+  const secretKeys = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!secretKeys) {
+    throw new Error("SUPABASE_SECRET_KEYS is required");
+  }
+  try {
+    const parsed = JSON.parse(secretKeys);
+    return parsed.service_role ?? parsed.serviceRole ?? parsed.service_role_key ?? parsed.serviceRoleKey ?? Object.values(parsed)[0] ?? secretKeys;
+  } catch {
+    return secretKeys;
+  }
+}
+
 serve(async (req: Request) => {
   try {
     if (req.method !== "POST") {
@@ -23,7 +36,7 @@ serve(async (req: Request) => {
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SECRET_KEYS")!,
+      getServiceRoleKey()!,
       {
         global: {
           headers: { Authorization: req.headers.get("Authorization")! },
@@ -55,7 +68,7 @@ serve(async (req: Request) => {
     // 2. Validar que la nueva sección pertenece al mismo grado
     const { data: secNueva, error: errSecNueva } = await supabase
       .from("secciones")
-      .select("id_seccion, grado_id, activo")
+      .select("id_seccion, grado, activo")
       .eq("id_seccion", nueva_seccion)
       .single();
 
@@ -69,7 +82,7 @@ serve(async (req: Request) => {
     // Obtener grado actual
     const { data: secActual, error: errSecActual } = await supabase
       .from("secciones")
-      .select("grado_id")
+      .select("grado")
       .eq("id_seccion", insc.seccion_id)
       .single();
 
@@ -80,7 +93,7 @@ serve(async (req: Request) => {
       );
     }
 
-    if (secNueva.grado_id !== secActual.grado_id) {
+    if (secNueva.grado !== secActual.grado) {
       return new Response(
         JSON.stringify({ ok: false, error: "La sección seleccionada no pertenece al mismo grado." }),
         { status: 400 }
@@ -97,8 +110,8 @@ serve(async (req: Request) => {
     // 3. Validar que el año escolar está activo
     const { data: anio, error: errAnio } = await supabase
       .from("anios_escolares")
-      .select("id_anio_escolar, activo")
-      .eq("id_anio_escolar", insc.anio_escolar_id)
+      .select("id_anio, activo")
+      .eq("id_anio", insc.anio_escolar_id)
       .single();
 
     if (errAnio || !anio) {

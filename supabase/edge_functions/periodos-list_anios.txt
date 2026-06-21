@@ -1,12 +1,25 @@
 // periodos-list_anios/index.ts
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 
+function getServiceRoleKey() {
+  const secretKeys = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!secretKeys) {
+    throw new Error("SUPABASE_SECRET_KEYS is required");
+  }
+  try {
+    const parsed = JSON.parse(secretKeys);
+    return parsed.service_role ?? parsed.serviceRole ?? parsed.service_role_key ?? parsed.serviceRoleKey ?? Object.values(parsed)[0] ?? secretKeys;
+  } catch {
+    return secretKeys;
+  }
+}
+
 // ------------------------------------------------------------
 // 1. Cliente admin
 // ------------------------------------------------------------
 const supabaseAdmin = createClient(
   Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SECRET_KEYS")!
+  getServiceRoleKey()!
 );
 
 // ------------------------------------------------------------
