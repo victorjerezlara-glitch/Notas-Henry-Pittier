@@ -1,9 +1,22 @@
 // users-delete_user/index.ts
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 
+function getServiceRoleKey() {
+  const secretKeys = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!secretKeys) {
+    throw new Error("SUPABASE_SECRET_KEYS is required");
+  }
+  try {
+    const parsed = JSON.parse(secretKeys);
+    return parsed.service_role ?? parsed.serviceRole ?? parsed.service_role_key ?? parsed.serviceRoleKey ?? Object.values(parsed)[0] ?? secretKeys;
+  } catch {
+    return secretKeys;
+  }
+}
+
 const supabaseAdmin = createClient(
   Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SECRET_KEYS")!
+  getServiceRoleKey()!
 );
 
 // ------------------------------------------------------------
@@ -96,7 +109,7 @@ Deno.serve(async (req) => {
     // ------------------------------------------------------------
 
     // 6.1 Eliminar docente si aplica
-    await supabaseAdmin.from("docentes").delete().eq("id_docente", user_id);
+    await supabaseAdmin.from("docentes").delete().eq("id", user_id);
 
     // 6.2 Eliminar rol
     await supabaseAdmin.from("user_roles").delete().eq("user_id", user_id);
