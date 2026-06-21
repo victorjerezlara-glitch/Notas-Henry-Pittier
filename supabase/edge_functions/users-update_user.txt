@@ -1,0 +1,214 @@
+// users-update_user/index.ts
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
+
+const supabaseAdmin = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  Deno.env.get("SUPABASE_SECRET_KEYS")!
+);
+
+// ------------------------------------------------------------
+// Obtener usuario autenticado
+// ------------------------------------------------------------
+async function getAuthUser(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) return null;
+
+  const token = authHeader.replace("Bearer ", "");
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error) return null;
+
+  return data.user;
+}
+
+// ------------------------------------------------------------
+// Roles del sistema
+// ------------------------------------------------------------
+const roleMap: Record<string, number> = {
+  docente: 1,
+  control_estudios: 2,
+  evaluacion_docente: 3,
+  directivo: 4,
+  superadmin: 5,
+};
+
+const adminRoles = [4, 5];
+
+async function getUserRole(userId: string) {
+  const { data } = await supabaseAdmin
+    .from("user_roles")
+    .select("id_rol")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  return data?.id_rol ?? null;
+}
+
+async function isSuperadmin(userId: string) {
+  return (await getUserRole(userId)) === 5;
+}
+
+// ------------------------------------------------------------
+// Función principal
+// ------------------------------------------------------------
+Deno.serve(async (req) => {
+  try {
+    // 1. Validar autenticación
+    const authUser = await getAuthUser(req);
+    if (!authUser) {
+      return new Response(JSON.stringify({ error: "Token inválido" }), {
+        status: 401,
+      });
+    }
+
+    // 2. Validar rol del autenticado
+    const authedRole = await getUserRole(authUser.id);
+    if (!authedRole || !adminRoles.includes(authedRole)) {
+      return new Response(JSON.stringify({ error: "Permiso denegado" }), {
+        status: 403,
+      });
+    }
+
+    const isAuthedSuperadmin = authedRole === 5;
+
+    // 3. Leer body
+    const body = await req.json();
+    const { user_id, nombres, apellidos, cedula, rol, activo, especialidad } =
+      body;
+
+    if (!user_id) {
+      return new Response(JSON.stringify({ error: "Se requiere user_id" }), {
+        status: 400,
+      });
+    }
+
+    // 4. Verificar existencia del perfil
+    const { data: perfilExistente } = await supabaseAdmin
+      .from("perfiles")
+      .select("id")
+      .eq("id", user_id)
+      .maybeSingle();
+
+    if (!perfilExistente) {
+      return new Response(JSON.stringify({ error: "Usuario no encontrado" }), {
+        status: 404,
+      });
+    }
+
+    // 5. Directivo NO puede modificar superadmin
+    if (!isAuthedSuperadmin && (await isSuperadmin(user_id))) {
+      return new Response(
+        JSON.stringify({ error: "No puedes modificar a un superadmin" }),
+        { status: 403 }
+      );
+    }
+
+    // ------------------------------------------------------------
+    // 6. Actualizar perfil
+    // ------------------------------------------------------------
+    const perfilUpdate: any = {};
+
+    if (nombres !== undefined) perfilUpdate.nombres = nombres;
+    if (apellidos !== undefined) perfilUpdate.apellidos = apellidos;
+    if (cedula !== undefined) perfilUpdate.cedula = cedula;
+    if (activo !== undefined) perfilUpdate.activo = activo;
+
+    if (Object.keys(perfilUpdate).length > 0) {
+      const { error: updPerf } = await supabaseAdmin
+        .from("perfiles")
+        .update(perfilUpdate)
+        .eq("id", user_id);
+
+      if (updPerf) {
+        return new Response(
+          JSON.stringify({
+            error: `Error actualizando perfil: ${updPerf.message}`,
+          }),
+          { status: 400 }
+        );
+      }
+    }
+
+    // ------------------------------------------------------------
+    // 7. Actualizar rol
+    // ------------------------------------------------------------
+    if (rol) {
+      const idRol = roleMap[rol];
+      if (!idRol) {
+        return new Response(JSON.stringify({ error: "Rol inválido" }), {
+          status: 400,
+        });
+      }
+
+      // Reemplazar rol
+      await supabaseAdmin.from("user_roles").delete().eq("user_id", user_id);
+      await supabaseAdmin
+        .from("user_roles")
+        .insert({ user_id, id_rol: idRol });
+
+      // ------------------------------------------------------------
+      // 8. Gestionar tabla docentes
+      // ------------------------------------------------------------
+      if (rol === "docente") {
+        const { data: existeDoc } = await supabaseAdmin
+          .from("docentes")
+          .select("id_docente")
+          .eq("id_docente", user_id)
+          .maybeSingle();
+
+        if (!existeDoc) {
+          await supabaseAdmin.from("docentes").insert({
+            id_docente: user_id,
+            especialidad: especialidad || null,
+          });
+        } else if (especialidad !== undefined) {
+          await supabaseAdmin
+            .from("docentes")
+            .update({ especialidad })
+            .eq("id_docente", user_id);
+        }
+      } else {
+        await supabaseAdmin
+          .from("docentes")
+          .delete()
+          .eq("id_docente", user_id);
+      }
+    }
+
+    // ------------------------------------------------------------
+    // 9. Actualizar especialidad si NO se cambió rol
+    // ------------------------------------------------------------
+    else if (especialidad !== undefined) {
+      const { data: esDoc } = await supabaseAdmin
+        .from("docentes")
+        .select("id_docente")
+        .eq("id_docente", user_id)
+        .maybeSingle();
+
+      if (!esDoc) {
+        return new Response(
+          JSON.stringify({
+            error:
+              "La especialidad solo puede asignarse a usuarios con rol docente",
+          }),
+          { status: 400 }
+        );
+      }
+
+      await supabaseAdmin
+        .from("docentes")
+        .update({ especialidad })
+        .eq("id_docente", user_id);
+    }
+
+    return new Response(
+      JSON.stringify({
+        message: "Usuario actualizado exitosamente",
+      }),
+      { status: 200 }
+    );
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+    });
+  }
+});

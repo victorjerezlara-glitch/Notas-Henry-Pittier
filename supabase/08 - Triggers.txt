@@ -1,0 +1,314 @@
+[
+  {
+    "event_object_schema": "auth",
+    "event_object_table": "users",
+    "trigger_name": "on_auth_user_created",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION handle_new_user()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "trigger_calificaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION actualizar_nota_lapso()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "audit_calificaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "trigger_calificaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION actualizar_nota_lapso()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "trigger_calificaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION actualizar_nota_lapso()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "trigger_validar_calificacion_ventana",
+    "action_timing": "BEFORE",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION validar_calificacion_ventana()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "trigger_validar_calificacion_ventana",
+    "action_timing": "BEFORE",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION validar_calificacion_ventana()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "audit_calificaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "calificaciones",
+    "trigger_name": "audit_calificaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones",
+    "trigger_name": "audit_evaluaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones",
+    "trigger_name": "audit_evaluaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones",
+    "trigger_name": "audit_evaluaciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones",
+    "trigger_name": "before_evaluacion_porcentaje",
+    "action_timing": "BEFORE",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION validar_porcentaje_evaluacion()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones",
+    "trigger_name": "before_evaluacion_porcentaje",
+    "action_timing": "BEFORE",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION validar_porcentaje_evaluacion()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones_notas",
+    "trigger_name": "trg_actualizar_promedio",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION actualizar_promedio_final()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones_notas",
+    "trigger_name": "trg_actualizar_promedio",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION actualizar_promedio_final()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "evaluaciones_notas",
+    "trigger_name": "trg_actualizar_promedio",
+    "action_timing": "AFTER",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION actualizar_promedio_final()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "inscripciones",
+    "trigger_name": "audit_inscripciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "inscripciones",
+    "trigger_name": "trg_prevenir_inscripcion_duplicada",
+    "action_timing": "BEFORE",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION fn_prevenir_inscripcion_duplicada()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "inscripciones",
+    "trigger_name": "trg_prevenir_inscripcion_duplicada",
+    "action_timing": "BEFORE",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION fn_prevenir_inscripcion_duplicada()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "inscripciones",
+    "trigger_name": "audit_inscripciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "inscripciones",
+    "trigger_name": "audit_inscripciones",
+    "action_timing": "AFTER",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "lapsos",
+    "trigger_name": "tg_lapso_overlap",
+    "action_timing": "BEFORE",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION check_lapso_overlap()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "lapsos",
+    "trigger_name": "tg_lapso_overlap",
+    "action_timing": "BEFORE",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION check_lapso_overlap()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "notas_lapso",
+    "trigger_name": "trigger_nota_anual",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION actualizar_nota_anual()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "notas_lapso",
+    "trigger_name": "trigger_nota_anual",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION actualizar_nota_anual()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "perfiles",
+    "trigger_name": "audit_perfiles",
+    "action_timing": "AFTER",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "perfiles",
+    "trigger_name": "audit_perfiles",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "perfiles",
+    "trigger_name": "audit_perfiles",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "periodos_academicos",
+    "trigger_name": "audit_periodos",
+    "action_timing": "AFTER",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "periodos_academicos",
+    "trigger_name": "audit_periodos",
+    "action_timing": "AFTER",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "public",
+    "event_object_table": "periodos_academicos",
+    "trigger_name": "audit_periodos",
+    "action_timing": "AFTER",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION fn_audit_log()"
+  },
+  {
+    "event_object_schema": "realtime",
+    "event_object_table": "subscription",
+    "trigger_name": "tr_check_filters",
+    "action_timing": "BEFORE",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION realtime.subscription_check_filters()"
+  },
+  {
+    "event_object_schema": "realtime",
+    "event_object_table": "subscription",
+    "trigger_name": "tr_check_filters",
+    "action_timing": "BEFORE",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION realtime.subscription_check_filters()"
+  },
+  {
+    "event_object_schema": "storage",
+    "event_object_table": "buckets",
+    "trigger_name": "enforce_bucket_name_length_trigger",
+    "action_timing": "BEFORE",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION storage.enforce_bucket_name_length()"
+  },
+  {
+    "event_object_schema": "storage",
+    "event_object_table": "buckets",
+    "trigger_name": "protect_buckets_delete",
+    "action_timing": "BEFORE",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION storage.protect_delete()"
+  },
+  {
+    "event_object_schema": "storage",
+    "event_object_table": "buckets",
+    "trigger_name": "enforce_bucket_name_length_trigger",
+    "action_timing": "BEFORE",
+    "event_manipulation": "INSERT",
+    "action_statement": "EXECUTE FUNCTION storage.enforce_bucket_name_length()"
+  },
+  {
+    "event_object_schema": "storage",
+    "event_object_table": "objects",
+    "trigger_name": "protect_objects_delete",
+    "action_timing": "BEFORE",
+    "event_manipulation": "DELETE",
+    "action_statement": "EXECUTE FUNCTION storage.protect_delete()"
+  },
+  {
+    "event_object_schema": "storage",
+    "event_object_table": "objects",
+    "trigger_name": "update_objects_updated_at",
+    "action_timing": "BEFORE",
+    "event_manipulation": "UPDATE",
+    "action_statement": "EXECUTE FUNCTION storage.update_updated_at_column()"
+  }
+]

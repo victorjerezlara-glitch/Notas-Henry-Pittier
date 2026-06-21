@@ -1,0 +1,65 @@
+// users-change_email/index.ts
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
+
+const supabaseAdmin = createClient(
+  Deno.env.get('SUPABASE_URL')!,
+  Deno.env.get('SUPABASE_SECRET_KEYS')!
+)
+
+async function getAuthUser(req: Request) {
+  const authHeader = req.headers.get('Authorization')
+  if (!authHeader) return null
+  const token = authHeader.replace('Bearer ', '')
+  const { data, error } = await supabaseAdmin.auth.getUser(token)
+  return error ? null : data.user
+}
+
+async function getUserRole(userId: string) {
+  const { data } = await supabaseAdmin
+    .from('user_roles')
+    .select('id_rol')
+    .eq('user_id', userId)
+    .maybeSingle()
+  return data?.id_rol || null
+}
+
+Deno.serve(async (req) => {
+  try {
+    const authUser = await getAuthUser(req)
+    if (!authUser) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401 })
+
+    const { target_user_id, new_email } = await req.json()
+    if (!target_user_id || !new_email) {
+      return new Response(JSON.stringify({ error: 'ID de usuario y nuevo email requeridos' }), { status: 400 })
+    }
+
+    // 1. Validar permisos del que llama (debe ser Directivo o Superadmin)
+    const callerRole = await getUserRole(authUser.id)
+    if (callerRole !== 4 && callerRole !== 5) {
+      return new Response(JSON.stringify({ error: 'Permisos insuficientes' }), { status: 403 })
+    }
+
+    // 2. Validar jerarquía: Directivo (4) no puede cambiar email de Superadmin (5)
+    const targetRole = await getUserRole(target_user_id)
+    if (callerRole === 4 && targetRole === 5) {
+      return new Response(JSON.stringify({ error: 'No puedes modificar el email de un Superadmin' }), { status: 403 })
+    }
+
+    // 3. Ejecutar cambio en el esquema AUTH
+    // Se usa email_confirm: true para que el cambio sea inmediato sin esperar clic en enlace
+    const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+      target_user_id,
+      { 
+        email: new_email,
+        email_confirm: true 
+      }
+    )
+
+    if (updateError) throw updateError
+
+    return new Response(JSON.stringify({ message: 'Email actualizado exitosamente' }), { status: 200 })
+
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500 })
+  }
+})

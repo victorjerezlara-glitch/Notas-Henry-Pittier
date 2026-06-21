@@ -1,0 +1,539 @@
+{
+  "edge_functions": [
+    {
+      "name": "cambiar-seccion",
+      "file": "supabase/edge_functions/cambiar-seccion.txt",
+      "referenced_tables": ["inscripciones", "secciones"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'inscripciones' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'secciones' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "logic_error",
+          "detail": "Multiple .single() calls without consistent error handling. Line 53: secActual retrieved without error check before property access at line 56"
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "file": "supabase/edge_functions/debug.txt",
+      "referenced_tables": [],
+      "issues": []
+    },
+    {
+      "name": "inscribir-estudiante",
+      "file": "supabase/edge_functions/inscribir-estudiante.txt",
+      "referenced_tables": ["anios_escolares", "estudiantes", "inscripciones", "secciones"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'anios_escolares' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'inscripciones' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'secciones' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'estudiantes' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "listar-estudiantes",
+      "file": "supabase/edge_functions/listar-estudiantes.txt",
+      "referenced_tables": ["estudiantes"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'estudiantes' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-activate_lapso",
+      "file": "supabase/edge_functions/periodos-activate_lapso.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-close_anio",
+      "file": "supabase/edge_functions/periodos-close_anio.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-close_lapso",
+      "file": "supabase/edge_functions/periodos-close_lapso.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-create_anio",
+      "file": "supabase/edge_functions/periodos-create_anio.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-create_lapso",
+      "file": "supabase/edge_functions/periodos-create_lapso.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-get_activo",
+      "file": "supabase/edge_functions/periodos-get_activo.txt",
+      "referenced_tables": ["anios_escolares", "lapsos"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'anios_escolares' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'lapsos' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-list_anios",
+      "file": "supabase/edge_functions/periodos-list_anios.txt",
+      "referenced_tables": ["anios_escolares"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'anios_escolares' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "periodos-list_lapsos",
+      "file": "supabase/edge_functions/periodos-list_lapsos.txt",
+      "referenced_tables": ["lapsos"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'lapsos' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "ping",
+      "file": "supabase/edge_functions/ping.txt",
+      "referenced_tables": [],
+      "issues": []
+    },
+    {
+      "name": "promover-estudiante",
+      "file": "supabase/edge_functions/promover-estudiante.txt",
+      "referenced_tables": ["inscripciones"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'inscripciones' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "repetir-grado",
+      "file": "supabase/edge_functions/repetir-grado.txt",
+      "referenced_tables": ["anios_escolares", "inscripciones", "secciones"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'anios_escolares' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'inscripciones' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'secciones' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "logic_error",
+          "detail": "CRITICAL: Line 69 - secActual retrieved with .single() WITHOUT error checking. Line 75 accesses secActual.grado_id unsafely - will crash if query fails or returns null"
+        }
+      ]
+    },
+    {
+      "name": "retirar-estudiante",
+      "file": "supabase/edge_functions/retirar-estudiante.txt",
+      "referenced_tables": [],
+      "issues": []
+    },
+    {
+      "name": "secciones-agregar-materia",
+      "file": "supabase/edge_functions/secciones-agregar-materia.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-asignar-docente",
+      "file": "supabase/edge_functions/secciones-asignar-docente.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-cambiar-docente",
+      "file": "supabase/edge_functions/secciones-cambiar-docente.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-clonar",
+      "file": "supabase/edge_functions/secciones-clonar.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-clonar-otro-anio",
+      "file": "supabase/edge_functions/secciones-clonar-otro-anio.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-crear",
+      "file": "supabase/edge_functions/secciones-crear.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-editar",
+      "file": "supabase/edge_functions/secciones-editar.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-listar",
+      "file": "supabase/edge_functions/secciones-listar.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-listar-materias",
+      "file": "supabase/edge_functions/secciones-listar-materias.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-quitar-materia",
+      "file": "supabase/edge_functions/secciones-quitar-materia.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "secciones-toggle",
+      "file": "supabase/edge_functions/secciones-toggle.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "users-change_email",
+      "file": "supabase/edge_functions/users-change_email.txt",
+      "referenced_tables": ["user_roles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "users-create_user",
+      "file": "supabase/edge_functions/users-create_user.txt",
+      "referenced_tables": ["docentes", "user_roles", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'docentes' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "users-delete_user",
+      "file": "supabase/edge_functions/users-delete_user.txt",
+      "referenced_tables": ["docentes", "user_roles", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'docentes' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "users-disable_user",
+      "file": "supabase/edge_functions/users-disable_user.txt",
+      "referenced_tables": ["user_roles", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "logic_error",
+          "detail": "Contains .single() call(s) with potentially insufficient error handling patterns"
+        }
+      ]
+    },
+    {
+      "name": "users-enable_user",
+      "file": "supabase/edge_functions/users-enable_user.txt",
+      "referenced_tables": ["user_roles", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "users-get_user",
+      "file": "supabase/edge_functions/users-get_user.txt",
+      "referenced_tables": ["rol", "user_roles", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'rol' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "users-list_users",
+      "file": "supabase/edge_functions/users-list_users.txt",
+      "referenced_tables": ["user_roles", "rol", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'rol' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    },
+    {
+      "name": "users-reset_password",
+      "file": "supabase/edge_functions/users-reset_password.txt",
+      "referenced_tables": ["user_roles", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "logic_error",
+          "detail": "Line 84 - .single() call pattern with error checking. However, potential for race conditions in auth operations."
+        }
+      ]
+    },
+    {
+      "name": "users-update_user",
+      "file": "supabase/edge_functions/users-update_user.txt",
+      "referenced_tables": ["docentes", "user_roles", "perfiles"],
+      "issues": [
+        {
+          "type": "missing_table",
+          "detail": "Table 'docentes' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'user_roles' referenced but does not exist in public schema metadata"
+        },
+        {
+          "type": "missing_table",
+          "detail": "Table 'perfiles' referenced but does not exist in public schema metadata"
+        }
+      ]
+    }
+  ],
+  "schema_summary": {
+    "metadata_source": "supabase/03 - tables columns.txt",
+    "metadata_status": "CRITICAL - Public schema NOT documented",
+    "public_tables_in_metadata": [],
+    "auth_schema_tables": [
+      "audit_log_entries",
+      "custom_oauth_providers",
+      "flow_state",
+      "identities",
+      "instances",
+      "mfa_amr_claims",
+      "mfa_challenges",
+      "mfa_factors",
+      "oauth_authorizations"
+    ],
+    "referenced_tables_not_in_metadata": [
+      "anios_escolares",
+      "docentes",
+      "estudiantes",
+      "inscripciones",
+      "lapsos",
+      "perfiles",
+      "rol",
+      "secciones",
+      "user_roles"
+    ],
+    "column_reference_map": {
+      "note": "Cannot verify column validity - public schema not in metadata file"
+    },
+    "summary_statistics": {
+      "total_edge_functions": 36,
+      "functions_with_zero_issues": 3,
+      "functions_with_missing_table_issues": 30,
+      "functions_with_logic_errors": 4,
+      "total_missing_table_issues": 53,
+      "total_logic_error_issues": 4,
+      "total_issues": 57,
+      "unique_tables_referenced": 9,
+      "coverage_gap": "100% - Zero public schema tables documented in metadata"
+    },
+    "issue_breakdown_by_type": {
+      "missing_table": 53,
+      "logic_error": 4,
+      "type_mismatch": 0
+    },
+    "critical_functions": [
+      {
+        "name": "repetir-grado",
+        "severity": "CRITICAL",
+        "reason": "Unsafe null reference - .single() without error check followed by property access"
+      },
+      {
+        "name": "cambiar-seccion",
+        "severity": "HIGH",
+        "reason": "Multiple .single() calls with inconsistent error handling"
+      }
+    ]
+  }
+}

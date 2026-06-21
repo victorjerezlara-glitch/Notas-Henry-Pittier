@@ -1,0 +1,60 @@
+// users-enable_user/index.ts
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
+
+const supabaseAdmin = createClient(
+  Deno.env.get('SUPABASE_URL')!,
+  Deno.env.get('SUPABASE_SECRET_KEYS')!
+)
+
+async function getAuthUser(req: Request) {
+  const authHeader = req.headers.get('Authorization')
+  if (!authHeader) return null
+  const token = authHeader.replace('Bearer ', '')
+  const { data, error } = await supabaseAdmin.auth.getUser(token)
+  return error ? null : data.user
+}
+
+async function getUserRole(userId: string) {
+  const { data } = await supabaseAdmin
+    .from('user_roles')
+    .select('id_rol')
+    .eq('user_id', userId)
+    .maybeSingle()
+  return data?.id_rol || null // [5]
+}
+
+Deno.serve(async (req) => {
+  try {
+    const authUser = await getAuthUser(req)
+    if (!authUser) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401 })
+
+    const { target_user_id } = await req.json()
+    if (!target_user_id) return new Response(JSON.stringify({ error: 'ID de usuario requerido' }), { status: 400 })
+
+    // Validar jerarquía administrativa [6]
+    const callerRole = await getUserRole(authUser.id)
+    if (callerRole !== 4 && callerRole !== 5) {
+      return new Response(JSON.stringify({ error: 'Permisos insuficientes' }), { status: 403 })
+    }
+
+    // 1. Sincronización: Habilitar en AUTH y en PUBLIC.PERFILES
+    // En Auth: Quitar baneo estableciendo 'none' [1]
+    const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(
+      target_user_id,
+      { ban_until: 'none' }
+    )
+    if (authError) throw authError
+
+    // En Perfiles: activo = true [2]
+    const { error: profileError } = await supabaseAdmin
+      .from('perfiles')
+      .update({ activo: true })
+      .eq('id', target_user_id)
+    if (profileError) throw profileError
+
+    return new Response(JSON.stringify({ message: 'Usuario habilitado con éxito' }), { status: 200 })
+
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 500 })
+  }
+})

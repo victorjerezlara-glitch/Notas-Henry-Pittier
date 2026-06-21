@@ -1,0 +1,602 @@
+[
+  {
+    "routine_schema": "auth",
+    "routine_name": "email",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "auth",
+    "routine_name": "jwt",
+    "routine_type": "FUNCTION",
+    "data_type": "jsonb"
+  },
+  {
+    "routine_schema": "auth",
+    "routine_name": "role",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "auth",
+    "routine_name": "uid",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "armor",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "armor",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "crypt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "dearmor",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "decrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "decrypt_iv",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "digest",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "digest",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "encrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "encrypt_iv",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "gen_random_bytes",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "gen_random_uuid",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "gen_salt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "gen_salt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "grant_pg_cron_access",
+    "routine_type": "FUNCTION",
+    "data_type": "event_trigger"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "grant_pg_graphql_access",
+    "routine_type": "FUNCTION",
+    "data_type": "event_trigger"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "grant_pg_net_access",
+    "routine_type": "FUNCTION",
+    "data_type": "event_trigger"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "hmac",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "hmac",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pg_stat_statements",
+    "routine_type": "FUNCTION",
+    "data_type": "record"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pg_stat_statements_info",
+    "routine_type": "FUNCTION",
+    "data_type": "record"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pg_stat_statements_reset",
+    "routine_type": "FUNCTION",
+    "data_type": "timestamp with time zone"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_armor_headers",
+    "routine_type": "FUNCTION",
+    "data_type": "record"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_key_id",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_decrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_decrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_decrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_decrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_decrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_decrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_encrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_encrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_encrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_pub_encrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_decrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_decrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_decrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_decrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_encrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_encrypt",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_encrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgp_sym_encrypt_bytea",
+    "routine_type": "FUNCTION",
+    "data_type": "bytea"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgrst_ddl_watch",
+    "routine_type": "FUNCTION",
+    "data_type": "event_trigger"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "pgrst_drop_watch",
+    "routine_type": "FUNCTION",
+    "data_type": "event_trigger"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "set_graphql_placeholder",
+    "routine_type": "FUNCTION",
+    "data_type": "event_trigger"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_generate_v1",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_generate_v1mc",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_generate_v3",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_generate_v4",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_generate_v5",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_nil",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_ns_dns",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_ns_oid",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_ns_url",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "extensions",
+    "routine_name": "uuid_ns_x500",
+    "routine_type": "FUNCTION",
+    "data_type": "uuid"
+  },
+  {
+    "routine_schema": "graphql_public",
+    "routine_name": "graphql",
+    "routine_type": "FUNCTION",
+    "data_type": "jsonb"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "activar_lapso",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "actualizar_nota_anual",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "actualizar_nota_lapso",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "actualizar_promedio_final",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "agregar_materia_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "asignar_docente_materia_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "calcular_nota_lapso",
+    "routine_type": "FUNCTION",
+    "data_type": "integer"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "calcular_promedio_estudiante",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "cambiar_docente_materia_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "cerrar_anio_escolar",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "cerrar_lapso",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "check_lapso_overlap",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "clonar_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "clonar_seccion_otro_anio",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "crear_anio_escolar",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "crear_lapso",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "crear_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "current_user_roles",
+    "routine_type": "FUNCTION",
+    "data_type": "integer"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "editar_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "fn_audit_log",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "fn_prevenir_inscripcion_duplicada",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "fn_retirar_estudiante",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "handle_new_user",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "has_any_role",
+    "routine_type": "FUNCTION",
+    "data_type": "boolean"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "has_role",
+    "routine_type": "FUNCTION",
+    "data_type": "boolean"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "listar_materias_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "listar_secciones",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "obtener_anio_activo",
+    "routine_type": "FUNCTION",
+    "data_type": "USER-DEFINED"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "obtener_lapsos",
+    "routine_type": "FUNCTION",
+    "data_type": "USER-DEFINED"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "promover_estudiantes",
+    "routine_type": "FUNCTION",
+    "data_type": "void"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "prueba_mostrar",
+    "routine_type": "FUNCTION",
+    "data_type": "void"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "quitar_materia_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "rls_auto_enable",
+    "routine_type": "FUNCTION",
+    "data_type": "event_trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "toggle_seccion",
+    "routine_type": "FUNCTION",
+    "data_type": "json"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "validar_calificacion_ventana",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "public",
+    "routine_name": "validar_porcentaje_evaluacion",
+    "routine_type": "FUNCTION",
+    "data_type": "trigger"
+  },
+  {
+    "routine_schema": "realtime",
+    "routine_name": "apply_rls",
+    "routine_type": "FUNCTION",
+    "data_type": "USER-DEFINED"
+  },
+  {
+    "routine_schema": "realtime",
+    "routine_name": "broadcast_changes",
+    "routine_type": "FUNCTION",
+    "data_type": "void"
+  },
+  {
+    "routine_schema": "realtime",
+    "routine_name": "build_prepared_statement_sql",
+    "routine_type": "FUNCTION",
+    "data_type": "text"
+  },
+  {
+    "routine_schema": "realtime",
+    "routine_name": "cast",
+    "routine_type": "FUNCTION",
+    "data_type": "jsonb"
+  }
+]

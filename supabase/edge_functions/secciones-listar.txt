@@ -1,0 +1,86 @@
+// secciones-listar/index.ts
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { verifyJWT } from "https://esm.sh/jose@4.14.4";
+
+Deno.serve(async (req) => {
+  try {
+    if (req.method !== "GET") {
+      return new Response(
+        JSON.stringify({ error: "Método no permitido" }),
+        { status: 405 }
+      );
+    }
+
+    // 1. Validar token
+    const token = req.headers.get("Authorization")?.replace("Bearer ", "");
+    if (!token) {
+      return new Response(JSON.stringify({ error: "Token requerido" }), {
+        status: 401,
+      });
+    }
+
+    const { payload } = await verifyJWT(token, Deno.env.get("JWT_SECRET"), {
+      algorithms: ["HS256"],
+    });
+
+    const user_id = payload.sub;
+
+    // 2. Validar roles permitidos
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL"),
+      Deno.env.get("SUPABASE_SECRET_KEYS")
+    );
+
+    const { data: roles } = await supabaseAdmin
+      .from("user_roles")
+      .select("id_rol")
+      .eq("user_id", user_id);
+
+    const rolesPermitidos = [1, 2, 4]; // superadmin, directivo, control_estudios
+    const tienePermiso = roles?.some((r) =>
+      rolesPermitidos.includes(r.id_rol)
+    );
+
+    if (!tienePermiso) {
+      return new Response(
+        JSON.stringify({ error: "No tiene permisos para listar secciones" }),
+        { status: 403 }
+      );
+    }
+
+    // 3. Obtener parámetros de querystring
+    const url = new URL(req.url);
+    const anio_escolar_id = url.searchParams.get("anio_escolar_id");
+    const activo = url.searchParams.get("activo");
+
+    if (!anio_escolar_id) {
+      return new Response(
+        JSON.stringify({ error: "anio_escolar_id es obligatorio" }),
+        { status: 400 }
+      );
+    }
+
+    // Convertir activo a boolean o null
+    let activoParsed = null;
+    if (activo === "true") activoParsed = true;
+    if (activo === "false") activoParsed = false;
+
+    // 4. Llamar a la función SQL
+    const { data, error } = await supabaseAdmin.rpc("listar_secciones", {
+      p_anio_escolar_id: Number(anio_escolar_id),
+      p_activo: activoParsed,
+    });
+
+    if (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 400,
+      });
+    }
+
+    return new Response(JSON.stringify(data), { status: 200 });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+    });
+  }
+});

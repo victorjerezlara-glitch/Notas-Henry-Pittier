@@ -1,0 +1,972 @@
+[
+  {
+    "schemaname": "public",
+    "tablename": "anios_escolares",
+    "policyname": "anios_directivo",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "(4 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "anios_escolares",
+    "policyname": "anios_read_all",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "anios_escolares",
+    "policyname": "superadmin_all_anios_escolares",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "asesores_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "asesores_docente_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(docente_id = auth.uid())",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "asesores_gestion",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "((3 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "asesores_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[3, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "asesores_read_others",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((2 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "asesores_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[1, 2, 3, 4, 5]) OR (docente_id = auth.uid()))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "asesores_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[3, 4, 5])",
+    "with_check": "has_any_role(ARRAY[3, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "asesores_seccion",
+    "policyname": "superadmin_all_asesores_seccion",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "calificaciones_asesor_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(EXISTS ( SELECT 1\n   FROM ((evaluaciones e\n     JOIN inscripciones i ON ((i.estudiante_id = calificaciones.estudiante_id)))\n     JOIN asesores_seccion a ON (((a.seccion_id = i.seccion_id) AND (a.anio_escolar_id = i.anio_escolar_id))))\n  WHERE ((e.id_evaluacion = calificaciones.evaluacion_id) AND (a.docente_id = auth.uid()) AND (a.activo = true))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "calificaciones_control_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((2 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "calificaciones_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "calificaciones_docente_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "(EXISTS ( SELECT 1\n   FROM evaluaciones e\n  WHERE ((e.id_evaluacion = calificaciones.evaluacion_id) AND (e.docente_id = auth.uid()))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "calificaciones_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "(EXISTS ( SELECT 1\n   FROM ((evaluaciones e\n     JOIN lapsos l ON ((l.id_lapso = e.lapso_id)))\n     JOIN periodos_academicos p ON ((p.id_periodo = l.anio_escolar_id)))\n  WHERE ((e.id_evaluacion = calificaciones.evaluacion_id) AND (e.docente_id = auth.uid()) AND (p.activo = true) AND ((l.inicio_carga IS NULL) OR (l.inicio_carga <= now())) AND ((l.fin_carga IS NULL) OR (l.fin_carga >= now())))))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "calificaciones_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[3, 4, 5, 2]) OR (EXISTS ( SELECT 1\n   FROM evaluaciones e\n  WHERE ((e.id_evaluacion = calificaciones.evaluacion_id) AND (e.docente_id = auth.uid())))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "calificaciones_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "(EXISTS ( SELECT 1\n   FROM ((evaluaciones e\n     JOIN lapsos l ON ((l.id_lapso = e.lapso_id)))\n     JOIN periodos_academicos p ON ((p.id_periodo = l.anio_escolar_id)))\n  WHERE ((e.id_evaluacion = calificaciones.evaluacion_id) AND (e.docente_id = auth.uid()) AND (p.activo = true) AND ((l.inicio_carga IS NULL) OR (l.inicio_carga <= now())) AND ((l.fin_carga IS NULL) OR (l.fin_carga >= now())))))",
+    "with_check": "(EXISTS ( SELECT 1\n   FROM ((evaluaciones e\n     JOIN lapsos l ON ((l.id_lapso = e.lapso_id)))\n     JOIN periodos_academicos p ON ((p.id_periodo = l.anio_escolar_id)))\n  WHERE ((e.id_evaluacion = calificaciones.evaluacion_id) AND (e.docente_id = auth.uid()) AND (p.activo = true) AND ((l.inicio_carga IS NULL) OR (l.inicio_carga <= now())) AND ((l.fin_carga IS NULL) OR (l.fin_carga >= now())))))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "calificaciones",
+    "policyname": "superadmin_all_calificaciones",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "docente_materia_seccion",
+    "policyname": "asignacion_docente_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((docente_id = auth.uid()) AND (1 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "docente_materia_seccion",
+    "policyname": "asignacion_evaldoc",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "((3 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "docente_materia_seccion",
+    "policyname": "dms_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "docente_materia_seccion",
+    "policyname": "dms_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[3, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "docente_materia_seccion",
+    "policyname": "dms_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[1, 2, 3, 4, 5]) OR (docente_id = auth.uid()))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "docente_materia_seccion",
+    "policyname": "dms_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[3, 4, 5])",
+    "with_check": "has_any_role(ARRAY[3, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "docente_materia_seccion",
+    "policyname": "superadmin_all_docente_materia_seccion",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "estudiantes",
+    "policyname": "estudiantes_control",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "((2 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "estudiantes",
+    "policyname": "estudiantes_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[2, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "estudiantes",
+    "policyname": "estudiantes_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[2, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "estudiantes",
+    "policyname": "estudiantes_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[3, 4, 5, 2]) OR (EXISTS ( SELECT 1\n   FROM (inscripciones i\n     JOIN docente_materia_seccion dms ON ((dms.seccion_id = i.seccion_id)))\n  WHERE ((i.estudiante_id = estudiantes.id_estudiante) AND (dms.docente_id = auth.uid())))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "estudiantes",
+    "policyname": "estudiantes_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[2, 4, 5])",
+    "with_check": "has_any_role(ARRAY[2, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "estudiantes",
+    "policyname": "superadmin_all_estudiantes",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "evaluaciones",
+    "policyname": "evaluaciones_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "evaluaciones",
+    "policyname": "evaluaciones_docente_own",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "((docente_id = auth.uid()) AND (1 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "evaluaciones",
+    "policyname": "evaluaciones_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[3, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "evaluaciones",
+    "policyname": "evaluaciones_read_evaldoc_directivo",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((3 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "evaluaciones",
+    "policyname": "evaluaciones_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[2, 3, 4, 5]) OR (docente_id = auth.uid()))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "evaluaciones",
+    "policyname": "evaluaciones_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[3, 4, 5])",
+    "with_check": "has_any_role(ARRAY[3, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "evaluaciones",
+    "policyname": "superadmin_all_evaluaciones",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "inscripciones",
+    "policyname": "inscripciones_control",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "((2 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "inscripciones",
+    "policyname": "inscripciones_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[2, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "inscripciones",
+    "policyname": "inscripciones_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[2, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "inscripciones",
+    "policyname": "inscripciones_read_docente_asesor",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "SELECT",
+    "qual": "((EXISTS ( SELECT 1\n   FROM docente_materia_seccion\n  WHERE ((docente_materia_seccion.docente_id = auth.uid()) AND (docente_materia_seccion.seccion_id = inscripciones.seccion_id)))) OR (EXISTS ( SELECT 1\n   FROM asesores_seccion\n  WHERE ((asesores_seccion.docente_id = auth.uid()) AND (asesores_seccion.seccion_id = inscripciones.seccion_id) AND (asesores_seccion.activo = true)))) OR (2 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "inscripciones",
+    "policyname": "inscripciones_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[3, 4, 5, 2]) OR (EXISTS ( SELECT 1\n   FROM docente_materia_seccion dms\n  WHERE ((dms.seccion_id = inscripciones.seccion_id) AND (dms.docente_id = auth.uid())))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "inscripciones",
+    "policyname": "inscripciones_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[2, 4, 5])",
+    "with_check": "has_any_role(ARRAY[2, 4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "inscripciones",
+    "policyname": "superadmin_all_inscripciones",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lapsos",
+    "policyname": "lapsos_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lapsos",
+    "policyname": "lapsos_directivo",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "(4 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lapsos",
+    "policyname": "lapsos_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lapsos",
+    "policyname": "lapsos_read_all",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lapsos",
+    "policyname": "lapsos_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "has_any_role(ARRAY[2, 3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lapsos",
+    "policyname": "lapsos_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": "has_any_role(ARRAY[4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "lapsos",
+    "policyname": "superadmin_all_lapsos",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "materias",
+    "policyname": "materias_directivo_all",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "(4 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "materias",
+    "policyname": "materias_read_all",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "materias",
+    "policyname": "materias_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "has_any_role(ARRAY[1, 2, 3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "materias",
+    "policyname": "superadmin_all_materias",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "deny_delete_notas_anuales",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "DELETE",
+    "qual": "false",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "deny_update_notas_anuales",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "UPDATE",
+    "qual": "false",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "deny_write_notas_anuales",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "false"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "notas_anuales_asesor_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(EXISTS ( SELECT 1\n   FROM (inscripciones i\n     JOIN asesores_seccion a ON (((a.seccion_id = i.seccion_id) AND (a.anio_escolar_id = i.anio_escolar_id))))\n  WHERE ((i.estudiante_id = notas_anuales.estudiante_id) AND (a.docente_id = auth.uid()) AND (a.activo = true))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "notas_anuales_control_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((2 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "notas_anuales_docente_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(EXISTS ( SELECT 1\n   FROM docente_materia_seccion dms\n  WHERE ((dms.docente_id = auth.uid()) AND (dms.materia_id = notas_anuales.materia_id) AND (dms.anio_escolar_id = notas_anuales.anio_escolar_id))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "notas_anuales_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[3, 4, 5, 2]) OR (EXISTS ( SELECT 1\n   FROM docente_materia_seccion dms\n  WHERE ((dms.materia_id = notas_anuales.materia_id) AND (dms.docente_id = auth.uid())))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_anuales",
+    "policyname": "superadmin_all_notas_anuales",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "deny_delete_notas_lapso",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "DELETE",
+    "qual": "false",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "deny_update_notas_lapso",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "UPDATE",
+    "qual": "false",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "deny_write_notas_lapso",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "false"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "notas_lapso_asesor_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(EXISTS ( SELECT 1\n   FROM (inscripciones i\n     JOIN asesores_seccion a ON (((a.seccion_id = i.seccion_id) AND (a.anio_escolar_id = i.anio_escolar_id))))\n  WHERE ((i.estudiante_id = notas_lapso.estudiante_id) AND (a.docente_id = auth.uid()) AND (a.activo = true))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "notas_lapso_control_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((2 IN ( SELECT current_user_roles() AS current_user_roles)) OR (4 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "notas_lapso_docente_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(EXISTS ( SELECT 1\n   FROM docente_materia_seccion dms\n  WHERE ((dms.docente_id = auth.uid()) AND (dms.materia_id = notas_lapso.materia_id) AND (dms.anio_escolar_id = ( SELECT lapsos.anio_escolar_id\n           FROM lapsos\n          WHERE (lapsos.id_lapso = notas_lapso.lapso_id))))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "notas_lapso_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(has_any_role(ARRAY[3, 4, 5, 2]) OR (EXISTS ( SELECT 1\n   FROM docente_materia_seccion dms\n  WHERE ((dms.materia_id = notas_lapso.materia_id) AND (dms.docente_id = auth.uid())))))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "notas_lapso",
+    "policyname": "superadmin_all_notas_lapso",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "deny_insert_perfiles",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "false"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "perfiles_directivo_all",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "(4 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "perfiles_insert_directivo_superadmin",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "perfiles_select_self_or_directivo",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "((auth.uid() = id) OR has_any_role(ARRAY[4, 5]))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "perfiles_self_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(auth.uid() = id)",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "perfiles_update_directivo",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": "has_any_role(ARRAY[4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "perfiles_update_self",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "(auth.uid() = id)",
+    "with_check": "(auth.uid() = id)"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "perfiles",
+    "policyname": "superadmin_all_perfiles",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "periodos_academicos",
+    "policyname": "periodos_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "periodos_academicos",
+    "policyname": "periodos_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "has_any_role(ARRAY[4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "periodos_academicos",
+    "policyname": "periodos_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "has_any_role(ARRAY[1, 2, 3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "periodos_academicos",
+    "policyname": "periodos_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": "has_any_role(ARRAY[4, 5])"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "rol",
+    "policyname": "superadmin_all_rol",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "secciones",
+    "policyname": "secciones_directivo",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "(4 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "secciones",
+    "policyname": "secciones_read_all",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "true",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "secciones",
+    "policyname": "secciones_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "has_any_role(ARRAY[1, 2, 3, 4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "secciones",
+    "policyname": "superadmin_all_secciones",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_roles",
+    "policyname": "superadmin_all_user_roles",
+    "permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "cmd": "ALL",
+    "qual": "(5 IN ( SELECT current_user_roles() AS current_user_roles))",
+    "with_check": "(5 IN ( SELECT current_user_roles() AS current_user_roles))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_roles",
+    "policyname": "user_roles_delete",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "DELETE",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_roles",
+    "policyname": "user_roles_gestion",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "ALL",
+    "qual": "((4 IN ( SELECT current_user_roles() AS current_user_roles)) OR (5 IN ( SELECT current_user_roles() AS current_user_roles)))",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_roles",
+    "policyname": "user_roles_insert",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "INSERT",
+    "qual": null,
+    "with_check": "(has_role(5) OR (has_role(4) AND (id_rol <> ALL (ARRAY[4, 5]))))"
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_roles",
+    "policyname": "user_roles_select",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_roles",
+    "policyname": "user_roles_self_read",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "SELECT",
+    "qual": "(user_id = auth.uid())",
+    "with_check": null
+  },
+  {
+    "schemaname": "public",
+    "tablename": "user_roles",
+    "policyname": "user_roles_update",
+    "permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "cmd": "UPDATE",
+    "qual": "has_any_role(ARRAY[4, 5])",
+    "with_check": "(has_role(5) OR (has_role(4) AND (id_rol <> ALL (ARRAY[4, 5]))))"
+  }
+]

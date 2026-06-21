@@ -1,0 +1,124 @@
+// /functions/users-list_users/index.ts
+
+import { serve } from "https://deno.land/std/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+serve(async (req) => {
+  try {
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const token = authHeader.replace("Bearer ", "");
+
+    if (!token) {
+      return new Response(JSON.stringify({ error: "Token requerido" }), {
+        status: 401,
+      });
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SECRET_KEYS")!
+    );
+
+    const body = await req.json();
+    const page = body.page ?? 1;
+    const per_page = body.per_page ?? 10;
+    const rol_filter = body.rol_filter ?? null;
+    const activo_filter = body.activo_filter ?? null;
+    const search = body.search ?? null;
+
+    // 1. Obtener usuario autenticado
+    const { data: authUser } = await supabase.auth.getUser(token);
+    const userId = authUser?.user?.id;
+
+    // 2. Obtener rol del usuario autenticado
+    const { data: rolData } = await supabase
+      .from("user_roles")
+      .select("id_rol")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    const { data: rolInfo } = await supabase
+      .from("rol")
+      .select("nombre")
+      .eq("id_rol", rolData?.id_rol)
+      .maybeSingle();
+
+    const rolActual = rolInfo?.nombre ?? null;
+
+    if (rolActual !== "superadmin" && rolActual !== "directivo") {
+      return new Response(JSON.stringify({ error: "Acceso denegado" }), {
+        status: 403,
+      });
+    }
+
+    // 3. Construir query base
+    let query = supabase
+      .from("perfiles")
+      .select("*", { count: "exact" });
+
+    // 4. Filtros
+    if (activo_filter !== null) {
+      query = query.eq("activo", activo_filter);
+    }
+
+    if (search) {
+      query = query.or(
+        `username.ilike.%${search}%,nombres.ilike.%${search}%,apellidos.ilike.%${search}%`
+      );
+    }
+
+    // 5. Paginación
+    const from = (page - 1) * per_page;
+    const to = from + per_page - 1;
+
+    const { data: perfiles, count } = await query.range(from, to);
+
+    // 6. Enriquecer cada usuario con rol y email
+    const items = [];
+
+    for (const p of perfiles) {
+      const { data: rData } = await supabase
+        .from("user_roles")
+        .select("id_rol")
+        .eq("user_id", p.id)
+        .maybeSingle();
+
+      let rolNombre = null;
+
+      if (rData?.id_rol) {
+        const { data: rInfo } = await supabase
+          .from("rol")
+          .select("nombre")
+          .eq("id_rol", rData.id_rol)
+          .maybeSingle();
+
+        rolNombre = rInfo?.nombre ?? null;
+      }
+
+      const { data: authInfo } = await supabase.auth.admin.getUserById(p.id);
+
+      items.push({
+        ...p,
+        email_auth: authInfo?.user?.email ?? null,
+        rol: rolNombre,
+      });
+    }
+
+    const respuesta = {
+      items,
+      pagination: {
+        total: count ?? 0,
+        page,
+        per_page,
+      },
+    };
+
+    return new Response(JSON.stringify(respuesta), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+    });
+  }
+});

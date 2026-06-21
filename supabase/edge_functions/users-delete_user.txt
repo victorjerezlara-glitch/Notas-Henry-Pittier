@@ -1,0 +1,125 @@
+// users-delete_user/index.ts
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
+
+const supabaseAdmin = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  Deno.env.get("SUPABASE_SECRET_KEYS")!
+);
+
+// ------------------------------------------------------------
+// Obtener usuario autenticado
+// ------------------------------------------------------------
+async function getAuthUser(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) return null;
+
+  const token = authHeader.replace("Bearer ", "");
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error) return null;
+
+  return data.user;
+}
+
+// ------------------------------------------------------------
+// Roles del sistema
+// ------------------------------------------------------------
+async function getUserRole(userId: string) {
+  const { data } = await supabaseAdmin
+    .from("user_roles")
+    .select("id_rol")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  return data?.id_rol ?? null;
+}
+
+async function isSuperadmin(userId: string) {
+  return (await getUserRole(userId)) === 5;
+}
+
+// ------------------------------------------------------------
+// Función principal
+// ------------------------------------------------------------
+Deno.serve(async (req) => {
+  try {
+    // 1. Validar autenticación
+    const authUser = await getAuthUser(req);
+    if (!authUser) {
+      return new Response(JSON.stringify({ error: "Token inválido" }), {
+        status: 401,
+      });
+    }
+
+    // 2. Validar rol del autenticado
+    const authedRole = await getUserRole(authUser.id);
+    const isAuthedSuperadmin = authedRole === 5;
+
+    if (!authedRole || (authedRole !== 4 && authedRole !== 5)) {
+      return new Response(JSON.stringify({ error: "Permiso denegado" }), {
+        status: 403,
+      });
+    }
+
+    // 3. Leer body
+    const body = await req.json();
+    const { user_id } = body;
+
+    if (!user_id) {
+      return new Response(JSON.stringify({ error: "Se requiere user_id" }), {
+        status: 400,
+      });
+    }
+
+    // 4. Verificar existencia del perfil
+    const { data: perfilExistente } = await supabaseAdmin
+      .from("perfiles")
+      .select("id")
+      .eq("id", user_id)
+      .maybeSingle();
+
+    if (!perfilExistente) {
+      return new Response(JSON.stringify({ error: "Usuario no encontrado" }), {
+        status: 404,
+      });
+    }
+
+    // 5. Directivo NO puede borrar superadmin
+    if (!isAuthedSuperadmin && (await isSuperadmin(user_id))) {
+      return new Response(
+        JSON.stringify({ error: "No puedes eliminar a un superadmin" }),
+        { status: 403 }
+      );
+    }
+
+    // ------------------------------------------------------------
+    // 6. Eliminar datos relacionados
+    // ------------------------------------------------------------
+
+    // 6.1 Eliminar docente si aplica
+    await supabaseAdmin.from("docentes").delete().eq("id_docente", user_id);
+
+    // 6.2 Eliminar rol
+    await supabaseAdmin.from("user_roles").delete().eq("user_id", user_id);
+
+    // 6.3 Eliminar perfil
+    await supabaseAdmin.from("perfiles").delete().eq("id", user_id);
+
+    // 6.4 Eliminar usuario de auth
+    await supabaseAdmin.auth.admin.deleteUser(user_id);
+
+    // ------------------------------------------------------------
+    // 7. Respuesta final
+    // ------------------------------------------------------------
+    return new Response(
+      JSON.stringify({
+        message: "Usuario eliminado exitosamente",
+        user_id,
+      }),
+      { status: 200 }
+    );
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+    });
+  }
+});

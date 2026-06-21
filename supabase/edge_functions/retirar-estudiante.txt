@@ -1,0 +1,58 @@
+// retirar-estudiante/index.ts
+
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+serve(async (req: Request) => {
+  try {
+    // 1. Validar método
+    if (req.method !== "POST") {
+      return new Response(
+        JSON.stringify({ ok: false, error: "Método no permitido." }),
+        { status: 405 }
+      );
+    }
+
+    // 2. Leer body
+    const { id_inscripcion } = await req.json();
+
+    if (!id_inscripcion) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "Falta id_inscripcion." }),
+        { status: 400 }
+      );
+    }
+
+    // 3. Crear cliente Supabase con autenticación del usuario
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SECRET_KEYS")!, // Necesita service role para SECURITY DEFINER
+      {
+        global: {
+          headers: { Authorization: req.headers.get("Authorization")! },
+        },
+      }
+    );
+
+    // 4. Llamar función SQL
+    const { data, error } = await supabase.rpc("fn_retirar_estudiante", {
+      p_id_inscripcion: id_inscripcion,
+    });
+
+    if (error) {
+      return new Response(
+        JSON.stringify({ ok: false, error: error.message }),
+        { status: 400 }
+      );
+    }
+
+    // 5. Respuesta correcta
+    return new Response(JSON.stringify(data), { status: 200 });
+
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ ok: false, error: err.message }),
+      { status: 500 }
+    );
+  }
+});

@@ -1,0 +1,75 @@
+// /functions/users-get_user/index.ts
+
+import { serve } from "https://deno.land/std/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+serve(async (req) => {
+  try {
+    // 1. Validar token
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const token = authHeader.replace("Bearer ", "");
+
+    if (!token) {
+      return new Response(JSON.stringify({ error: "Token requerido" }), {
+        status: 401,
+      });
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SECRET_KEYS")!
+    );
+
+    const { user_id } = await req.json();
+
+    // 2. Obtener perfil
+    const { data: perfil } = await supabase
+      .from("perfiles")
+      .select("*")
+      .eq("id", user_id)
+      .maybeSingle();
+
+    // 3. Obtener email desde auth.users
+    const { data: authUser } = await supabase.auth.admin.getUserById(user_id);
+
+    // 4. Obtener rol desde user_roles
+    const { data: rolData } = await supabase
+      .from("user_roles")
+      .select("id_rol")
+      .eq("user_id", user_id)
+      .maybeSingle();
+
+    let rolNombre = null;
+
+    if (rolData?.id_rol) {
+      const { data: rolInfo } = await supabase
+        .from("rol")
+        .select("nombre")
+        .eq("id_rol", rolData.id_rol)
+        .maybeSingle();
+
+      rolNombre = rolInfo?.nombre ?? null;
+    }
+
+    const respuesta = {
+      id: perfil?.id ?? user_id,
+      username: perfil?.username ?? null,
+      nombres: perfil?.nombres ?? null,
+      apellidos: perfil?.apellidos ?? null,
+      cedula: perfil?.cedula ?? null,
+      activo: perfil?.activo ?? null,
+      creado_en: perfil?.created_at ?? null,
+      actualizado_en: perfil?.updated_at ?? null,
+      email_auth: authUser?.user?.email ?? null,
+      rol: rolNombre,
+    };
+
+    return new Response(JSON.stringify(respuesta), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (e) {
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+    });
+  }
+});

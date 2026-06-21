@@ -1,0 +1,282 @@
+[
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "docente_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "perfiles",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "anio_escolar_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "anios_escolares",
+    "foreign_column_name": "id_anio"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "seccion_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "secciones",
+    "foreign_column_name": "id_seccion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calificaciones",
+    "column_name": "evaluacion_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "evaluaciones",
+    "foreign_column_name": "id_evaluacion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calificaciones",
+    "column_name": "estudiante_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "estudiantes",
+    "foreign_column_name": "id_estudiante"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "anio_escolar_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "anios_escolares",
+    "foreign_column_name": "id_anio"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "materia_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "materias",
+    "foreign_column_name": "id_materia"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "docente_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "perfiles",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "seccion_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "secciones",
+    "foreign_column_name": "id_seccion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "materia_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "materias",
+    "foreign_column_name": "id_materia"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "seccion_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "secciones",
+    "foreign_column_name": "id_seccion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "docente_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "perfiles",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "lapso_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "lapsos",
+    "foreign_column_name": "id_lapso"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "seccion_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "secciones",
+    "foreign_column_name": "id_seccion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "docente_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "perfiles",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "materia_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "materias",
+    "foreign_column_name": "id_materia"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "lapso_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "lapsos",
+    "foreign_column_name": "id_lapso"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "estudiante_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "estudiantes",
+    "foreign_column_name": "id_estudiante"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "evaluacion_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "evaluaciones_lapsos",
+    "foreign_column_name": "id_evaluacion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "anio_escolar_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "anios_escolares",
+    "foreign_column_name": "id_anio"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "estudiante_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "estudiantes",
+    "foreign_column_name": "id_estudiante"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "seccion_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "secciones",
+    "foreign_column_name": "id_seccion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "anio_escolar_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "anios_escolares",
+    "foreign_column_name": "id_anio"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "estudiante_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "estudiantes",
+    "foreign_column_name": "id_estudiante"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "anio_escolar_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "anios_escolares",
+    "foreign_column_name": "id_anio"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "materia_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "materias",
+    "foreign_column_name": "id_materia"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_lapso",
+    "column_name": "lapso_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "lapsos",
+    "foreign_column_name": "id_lapso"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_lapso",
+    "column_name": "estudiante_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "estudiantes",
+    "foreign_column_name": "id_estudiante"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_lapso",
+    "column_name": "materia_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "materias",
+    "foreign_column_name": "id_materia"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "seccion_materias",
+    "column_name": "id_docente",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "perfiles",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "seccion_materias",
+    "column_name": "id_materia",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "materias",
+    "foreign_column_name": "id_materia"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "seccion_materias",
+    "column_name": "id_seccion",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "secciones",
+    "foreign_column_name": "id_seccion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "secciones",
+    "column_name": "anio_escolar_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "anios_escolares",
+    "foreign_column_name": "id_anio"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_roles",
+    "column_name": "user_id",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "perfiles",
+    "foreign_column_name": "id"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "user_roles",
+    "column_name": "id_rol",
+    "foreign_table_schema": "public",
+    "foreign_table_name": "rol",
+    "foreign_column_name": "id_rol"
+  }
+]

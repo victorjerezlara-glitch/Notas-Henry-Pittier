@@ -1,0 +1,166 @@
+// repetir-grado/index.ts
+
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+serve(async (req: Request) => {
+  try {
+    if (req.method !== "POST") {
+      return new Response(
+        JSON.stringify({ ok: false, error: "Método no permitido." }),
+        { status: 405 }
+      );
+    }
+
+    const { id_inscripcion, nueva_seccion } = await req.json();
+
+    if (!id_inscripcion || !nueva_seccion) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "Faltan parámetros obligatorios." }),
+        { status: 400 }
+      );
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SECRET_KEYS")!,
+      {
+        global: {
+          headers: { Authorization: req.headers.get("Authorization")! },
+        },
+      }
+    );
+
+    // 1. Obtener inscripción actual
+    const { data: insc, error: errInsc } = await supabase
+      .from("inscripciones")
+      .select("*")
+      .eq("id_inscripcion", id_inscripcion)
+      .single();
+
+    if (errInsc || !insc) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "La inscripción no existe." }),
+        { status: 400 }
+      );
+    }
+
+    if (insc.estado !== "activo") {
+      return new Response(
+        JSON.stringify({ ok: false, error: "Solo se pueden repetir inscripciones activas." }),
+        { status: 400 }
+      );
+    }
+
+    // 2. Validar que la nueva sección pertenece al mismo grado
+    const { data: secNueva, error: errSecNueva } = await supabase
+      .from("secciones")
+      .select("id_seccion, grado_id, activo")
+      .eq("id_seccion", nueva_seccion)
+      .single();
+
+    if (errSecNueva || !secNueva) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "La sección seleccionada no existe." }),
+        { status: 400 }
+      );
+    }
+
+    // Obtener grado actual
+    const { data: secActual, error: errSecActual } = await supabase
+      .from("secciones")
+      .select("grado_id")
+      .eq("id_seccion", insc.seccion_id)
+      .single();
+
+    if (errSecActual || !secActual) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "La sección actual no existe." }),
+        { status: 400 }
+      );
+    }
+
+    if (secNueva.grado_id !== secActual.grado_id) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "La sección seleccionada no pertenece al mismo grado." }),
+        { status: 400 }
+      );
+    }
+
+    if (!secNueva.activo) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "La sección seleccionada está inactiva." }),
+        { status: 400 }
+      );
+    }
+
+    // 3. Validar que el año escolar está activo
+    const { data: anio, error: errAnio } = await supabase
+      .from("anios_escolares")
+      .select("id_anio_escolar, activo")
+      .eq("id_anio_escolar", insc.anio_escolar_id)
+      .single();
+
+    if (errAnio || !anio) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "El año escolar no existe." }),
+        { status: 400 }
+      );
+    }
+
+    if (!anio.activo) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "El año escolar está cerrado o inactivo." }),
+        { status: 400 }
+      );
+    }
+
+    // 4. Marcar inscripción actual como reprobada (o repetida)
+    const { error: errUpdate } = await supabase
+      .from("inscripciones")
+      .update({ estado: "reprobado" }) // o "repetido" si tienes ese estado
+      .eq("id_inscripcion", id_inscripcion);
+
+    if (errUpdate) {
+      return new Response(
+        JSON.stringify({ ok: false, error: errUpdate.message }),
+        { status: 400 }
+      );
+    }
+
+    // 5. Crear nueva inscripción en la nueva sección
+    const { data: nueva, error: errNueva } = await supabase
+      .from("inscripciones")
+      .insert({
+        estudiante_id: insc.estudiante_id,
+        seccion_id: nueva_seccion,
+        anio_escolar_id: insc.anio_escolar_id,
+        estado: "activo"
+      })
+      .select()
+      .single();
+
+    if (errNueva) {
+      return new Response(
+        JSON.stringify({ ok: false, error: errNueva.message }),
+        { status: 400 }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        mensaje: "Estudiante repetido correctamente.",
+        id_estudiante: insc.estudiante_id,
+        nueva_inscripcion: nueva
+      }),
+      { status: 200 }
+    );
+
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ ok: false, error: err.message }),
+      { status: 500 }
+    );
+  }
+});

@@ -1,0 +1,95 @@
+// periodos-create_lapso/index.ts
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
+
+// ------------------------------------------------------------
+// 1. Cliente admin
+// ------------------------------------------------------------
+const supabaseAdmin = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  Deno.env.get("SUPABASE_SECRET_KEYS")!
+);
+
+// ------------------------------------------------------------
+// 2. Obtener usuario autenticado
+// ------------------------------------------------------------
+async function getAuthUser(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) return null;
+
+  const token = authHeader.replace("Bearer ", "");
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error) return null;
+
+  return data.user;
+}
+
+// ------------------------------------------------------------
+// 3. Obtener rol del usuario
+// ------------------------------------------------------------
+async function getUserRole(userId: string) {
+  const { data } = await supabaseAdmin
+    .from("user_roles")
+    .select("id_rol")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  return data?.id_rol || null;
+}
+
+const adminRoles = [4, 5]; // directivo y superadmin
+
+// ------------------------------------------------------------
+// 4. Función principal
+// ------------------------------------------------------------
+Deno.serve(async (req) => {
+  try {
+    // Validar autenticación
+    const authUser = await getAuthUser(req);
+    if (!authUser) {
+      return new Response(JSON.stringify({ error: "Token inválido" }), {
+        status: 401,
+      });
+    }
+
+    // Validar rol
+    const rol = await getUserRole(authUser.id);
+    if (!rol || !adminRoles.includes(rol)) {
+      return new Response(JSON.stringify({ error: "Permiso denegado" }), {
+        status: 403,
+      });
+    }
+
+    // Leer body
+    const body = await req.json();
+    const { id_anio, nombre, fecha_inicio, fecha_fin } = body;
+
+    if (!id_anio || !nombre || !fecha_inicio || !fecha_fin) {
+      return new Response(
+        JSON.stringify({
+          error: "Se requieren id_anio, nombre, fecha_inicio y fecha_fin",
+        }),
+        { status: 400 }
+      );
+    }
+
+    // Llamar función SQL
+    const { data, error } = await supabaseAdmin.rpc("crear_lapso", {
+      p_id_anio: id_anio,
+      p_nombre: nombre,
+      p_fecha_inicio: fecha_inicio,
+      p_fecha_fin: fecha_fin,
+    });
+
+    if (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 400,
+      });
+    }
+
+    return new Response(JSON.stringify(data), { status: 200 });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+    });
+  }
+});

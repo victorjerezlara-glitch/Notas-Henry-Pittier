@@ -1,0 +1,802 @@
+[
+  {
+    "table_schema": "public",
+    "table_name": "anios_escolares",
+    "column_name": "id_anio",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('anios_escolares_id_anio_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "anios_escolares",
+    "column_name": "nombre",
+    "data_type": "character varying",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "anios_escolares",
+    "column_name": "fecha_inicio",
+    "data_type": "date",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "anios_escolares",
+    "column_name": "fecha_fin",
+    "data_type": "date",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "anios_escolares",
+    "column_name": "activo",
+    "data_type": "boolean",
+    "is_nullable": "YES",
+    "column_default": "true"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "anios_escolares",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "id_asesoria",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('asesores_seccion_id_asesoria_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "docente_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "seccion_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "anio_escolar_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "activo",
+    "data_type": "boolean",
+    "is_nullable": "YES",
+    "column_default": "true"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "asesores_seccion",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "audit_log",
+    "column_name": "id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('audit_log_id_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "audit_log",
+    "column_name": "tabla",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "audit_log",
+    "column_name": "operacion",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "audit_log",
+    "column_name": "registro_id",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "audit_log",
+    "column_name": "usuario",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "audit_log",
+    "column_name": "cambios",
+    "data_type": "jsonb",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "audit_log",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calificaciones",
+    "column_name": "id_calificacion",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('calificaciones_id_calificacion_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calificaciones",
+    "column_name": "evaluacion_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calificaciones",
+    "column_name": "estudiante_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calificaciones",
+    "column_name": "nota",
+    "data_type": "numeric",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "calificaciones",
+    "column_name": "observaciones",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "id_asignacion",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('docente_materia_seccion_id_asignacion_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "docente_id",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "materia_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "seccion_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "anio_escolar_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docente_materia_seccion",
+    "column_name": "activo",
+    "data_type": "boolean",
+    "is_nullable": "YES",
+    "column_default": "true"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docentes",
+    "column_name": "id",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docentes",
+    "column_name": "username",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docentes",
+    "column_name": "nombres",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docentes",
+    "column_name": "apellidos",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "docentes",
+    "column_name": "activo",
+    "data_type": "boolean",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "id_estudiante",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('estudiantes_id_estudiante_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "cedula",
+    "data_type": "character varying",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "nombres",
+    "data_type": "character varying",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "apellidos",
+    "data_type": "character varying",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "fecha_nacimiento",
+    "data_type": "date",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "sexo",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "direccion",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "telefono",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "representante",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "telefono_representante",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "estudiantes",
+    "column_name": "activo",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": "true"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "id_evaluacion",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('evaluaciones_id_evaluacion_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "docente_id",
+    "data_type": "uuid",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "materia_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "seccion_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "lapso_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "nombre",
+    "data_type": "character varying",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "porcentaje",
+    "data_type": "numeric",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "instrumento",
+    "data_type": "character varying",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "tecnica",
+    "data_type": "character varying",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones",
+    "column_name": "fecha_creacion",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "id_evaluacion",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('evaluaciones_lapsos_id_evaluacion_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "seccion_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "materia_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "docente_id",
+    "data_type": "uuid",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "lapso_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "nombre",
+    "data_type": "text",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "tecnica",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "instrumento",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "porcentaje",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "fecha",
+    "data_type": "date",
+    "is_nullable": "NO",
+    "column_default": "CURRENT_DATE"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_lapsos",
+    "column_name": "created_at",
+    "data_type": "timestamp without time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "id_nota",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('evaluaciones_notas_id_nota_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "evaluacion_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "estudiante_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "nota",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "observacion",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "evaluaciones_notas",
+    "column_name": "created_at",
+    "data_type": "timestamp without time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "id_inscripcion",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('inscripciones_id_inscripcion_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "estudiante_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "seccion_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "anio_escolar_id",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "estado",
+    "data_type": "USER-DEFINED",
+    "is_nullable": "YES",
+    "column_default": "'activo'::estado_inscripcion"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "inscripciones",
+    "column_name": "created_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "id_lapso",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('lapsos_id_lapso_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "anio_escolar_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "numero_lapso",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "fecha_inicio",
+    "data_type": "date",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "fecha_fin",
+    "data_type": "date",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "activo",
+    "data_type": "boolean",
+    "is_nullable": "YES",
+    "column_default": "true"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "inicio_carga",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "lapsos",
+    "column_name": "fin_carga",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "materias",
+    "column_name": "id_materia",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('materias_id_materia_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "materias",
+    "column_name": "nombre",
+    "data_type": "character varying",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "materias",
+    "column_name": "descripcion",
+    "data_type": "text",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "id_nota_anual",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('notas_anuales_id_nota_anual_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "estudiante_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "materia_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "anio_escolar_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "nota_final",
+    "data_type": "numeric",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "aprobado",
+    "data_type": "boolean",
+    "is_nullable": "NO",
+    "column_default": null
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_anuales",
+    "column_name": "updated_at",
+    "data_type": "timestamp with time zone",
+    "is_nullable": "YES",
+    "column_default": "now()"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_lapso",
+    "column_name": "id_nota_lapso",
+    "data_type": "integer",
+    "is_nullable": "NO",
+    "column_default": "nextval('notas_lapso_id_nota_lapso_seq'::regclass)"
+  },
+  {
+    "table_schema": "public",
+    "table_name": "notas_lapso",
+    "column_name": "estudiante_id",
+    "data_type": "integer",
+    "is_nullable": "YES",
+    "column_default": null
+  }
+]
